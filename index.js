@@ -41,14 +41,12 @@ var firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 firebase.auth.Auth.Persistence.LOCAL;
 
-app.get('/',(req, res) => {
-    if(!req.user){
-        res.render('signin');
-    }
-    else{
-        res.render('index');
-    }
-  
+app.get('/', (req, res) => {
+  if (!req.user) {
+    res.render('signin');
+  } else {
+    res.render('index');
+  }
 });
 
 app.post('/signin', (req, res) => {
@@ -79,97 +77,79 @@ app.get('/logout', (req, res) => {
 });
 
 app.get('/resetPassword', (req, res) => {
-    res.render('forgetPassword');
-  });
-  
+  res.render('forgetPassword');
+});
 
 app.post('/resetPassword', (req, res) => {
   var email = req.body.email;
 
-    firebase.auth()
-      .sendPasswordResetEmail(email)
-      .then(function () {
-        window.alert('Email has been sent to you, Please check your email');
-      })
-      .catch(function (error) {
-        req.flash('error', errorMessage);
-        res.redirect('/');
-      })
+  firebase
+    .auth()
+    .sendPasswordResetEmail(email)
+    .then(function () {
+      window.alert('Email has been sent to you, Please check your email');
+    })
+    .catch(function (error) {
+      req.flash('error', errorMessage);
+      res.redirect('/');
     });
-
-
+});
 
 app.get('/addRoom', (req, res) => {
-    res.render('accountSetting');
-  });
+  res.render('accountSetting');
+});
 
 app.post('/addRoom', (req, res) => {
-    var block = req.body.block;
-    var room_no = req.body.room_no;
-    const numberOfWindows = req.body.numberOfWindows;
-    // var curtains = req.body.curtains;
-    // var led = req.body.led;
-    
 
-    var rootRef1 = firebase.database().ref().child('Rooms');
-    var rootRef2 = rootRef1.child(block);
-    var rootRef = rootRef2.child(room_no);
-    var cur = rootRef.child('Curtains');
-    var led = rootRef.child('LEDs');
-    var room_sensor = rootRef.child('Room Sensor');
-    var win = rootRef.child('Window Sensor');
-	var userData ={
-	    'Automatic Status': true,
-	    Class: room_no,
-	    ClassLux: 400,
-	    Status: true,
-	}
-	var userData1 ={}
-	function Windows(numberOfWindows){
-		var i = 1;
-		while (i <= numberOfWindows){
-			var windows = 'Window '+i;
-			userData1[windows]='100';
-            i=i+1;
-		} 
-	}
-	Windows(numberOfWindows);
+  var block = req.body.block;
+  var room_no = req.body.room_no;
+  var class_lux = req.body.class_lux;
+  const numberOfWindows = req.body.curtains;
+  var status = req.body.status;
+  const numberofLeds = req.body.leds;
 
-	var userData2 ={
-	'Automatic Status': true,
-	Class: room_no,
-	ClassLux: 400,
-	Status: true,
-	}
-
-  var userData3 ={
+  var rootRef1 = firebase.database().ref().child('Rooms');
+  var rootRef2 = rootRef1.child(block);
+  var rootRef = rootRef2.child(room_no);
+  var cur = rootRef.child('Curtains');
+  var led = rootRef.child('LEDs');
+  var room_sensor = rootRef.child('Room Sensor');
+  var window_sensor = rootRef.child('Window Sensor');
+  var userData = {
     'Automatic Status': true,
     Class: room_no,
-    ClassLux: 400,
-    Status: true,
-}
-      
+    ClassLux: class_lux,
+    Status: status,
+  };
 
-    rootRef.set(userData);
-    cur.set(userData1);
-    led.set(userData2);
-    room_sensor.set(userData3);
+  var userData1 = {};
+  function Windows(numberOfWindows) {
+    var i = 1;
+    while (i <= numberOfWindows) {
+      var windows = 'Window ' + i;
+      userData1[windows] = '100';
+      i = i + 1;
+    }
+  }
 
-          // rootRef.set((userData),function(error){
-      //     if(error){
-      //     req.flash('error', errorMessage);
-      //     res.redirect('signin');
-      // }else {
-      // res.render("index");
-      // }
-      // }
-      // )
-    //  root.set(userData).child('Curtains');
-    // //   var userData1 ={
-    // //     'Automatic Status': true,
-    // //     Class: room_no,
-    // //     ClassLux: 400,
-    // // }
+  var userData2 = {};
+  function Led(numberofLeds) {
+    var i = 1;
+    while (i <= numberofLeds) {
+      var LED = 'LED ' + i;
+      userData2[LED] = '100';
+      i = i + 1;
+    }
+  }
+
+  Windows(numberOfWindows);
+  Led(numberofLeds);
+
+  rootRef.set(userData);
+  cur.set(userData1);
+  led.set(userData2);
+  room_sensor.set(userData);
+  window_sensor.set(userData1);
 });
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Server started at port ${port}`));

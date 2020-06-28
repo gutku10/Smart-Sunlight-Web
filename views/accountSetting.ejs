@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
         <title>Account Setting</title>
@@ -8,10 +8,10 @@
             
             
             <!-- MATERIAL DESIGN ICONIC FONT -->
-        <link rel="stylesheet" href="design_files/fonts/material-design-iconic-font/css/material-design-iconic-font.min.css">
+        <link rel="stylesheet" href="fonts/material-design-iconic-font/css/material-design-iconic-font.min.css">
                 
                 <!-- STYLE CSS -->
-        <link rel="stylesheet" href="design_files/css/style.css"> 
+        <link rel="stylesheet" href="css/style.css"> 
 
         <script src="https://www.gstatic.com/firebasejs/7.15.4/firebase-app.js"></script>
         <script src="https://www.gstatic.com/firebasejs/7.15.4/firebase-auth.js"></script>
@@ -20,16 +20,16 @@
 </head>
 
 <body>
-<div class="wrapper" style="background-image: url('design_files/images/loginback.jpg')">
+<div class="wrapper" style="background-image: url('images/loginback.jpg')">
 <div class="inner">
 <div class="image-holder">
-<img src="design_files/images/login.jpg"></div>
+<img src="images/login.jpg"></div>
 <form action="/addRoom" method="POST">
             <h1>Account Settings</h1>
             <div class="form-wrapper">
-                <input type="text" placeholder="block" name="block" id="block" class="form-control" />
-                <input type="text" placeholder="second Name" name="secondName" id="secondName" class="form-control" />
-                 <i class="zmdi zmdi-lock"></i>
+                <input type="text" placeholder="Choose Block" name="block" id="block" class="form-control" />
+                <input type="text" placeholder="Room No" name="room_no" id="room_no" class="form-control" />
+                <input type="text" placeholder="Choose intensity" name="class_lux" id="class_lux" class="form-control" />
             <!-- </div>
                 <div class="form-wrapper">
                <select name="" id="country"name="country" class="form-control">
@@ -42,34 +42,24 @@
                <i class="zmdi zmdi-caret-down" style="font-size: 17px"></i>
             </div>
             <div class="form-wrapper"> -->
-                <input type="text" placeholder="room_no" id="room_no" name="room_no" class="form-control" />
-                 <i class="zmdi zmdi-lock"></i>
+                <input type="text" placeholder="No. of Curtains" id="curtains" name="curtains" class="form-control" />
+                <input type="text" placeholder="No. of LEDs" id="leds" name="leds" class="form-control" />
   
             </div>
                 <div class="form-wrapper">
-               <select id="gender" name="gender" class="form-control">
-               <option value="" disabled selected>Gender</option>
-               <option value="Male">Male</option>
-               <option value="Female">Female</option>
+               <select id="status" name="status" class="form-control">
+               <option value="" disabled selected>Default Status</option>
+               <option value="True">True</option>
+               <option value="False">False</option>
                </select>
                <i class="zmdi zmdi-caret-down" style="font-size: 17px"></i>
             </div>
 
-            <div class="form-wrapper">
-                <input type="text" placeholder="Address" name="address" id="address" class="form-control" />
-                <i class="zmdi zmdi-lock"></i>
-  
-            </div>
-            <div class="form-wrapper">
-                <input type="Number" placeholder="Number of Windows" name="numberOfWindows" id="numberOfWindows" class="form-control" />
-                <i class="zmdi zmdi-lock"></i>
-  
-            </div>
 
 
             <div class="form-group container-login100-form-btn">
                 <button id="btn-update" type="submit">
-                Update & Set
+                Set the Data...
                 <i class="zmdi zmdi -arrow-right"></i> 
               </button>
         </div>
