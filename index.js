@@ -106,6 +106,7 @@ app.get('/addRoom', (req, res) => {
 app.post('/addRoom', (req, res) => {
     var block = req.body.block;
     var room_no = req.body.room_no;
+    const numberOfWindows = req.body.numberOfWindows;
     // var curtains = req.body.curtains;
     // var led = req.body.led;
     
@@ -117,24 +118,29 @@ app.post('/addRoom', (req, res) => {
     var led = rootRef.child('LEDs');
     var room_sensor = rootRef.child('Room Sensor');
     var win = rootRef.child('Window Sensor');
-      var userData ={
-          'Automatic Status': true,
-          Class: room_no,
-          ClassLux: 400,
-          Status: true,
-      }
-  
-      var userData1 ={
-       
-       
-    }
+	var userData ={
+	    'Automatic Status': true,
+	    Class: room_no,
+	    ClassLux: 400,
+	    Status: true,
+	}
+	var userData1 ={}
+	function Windows(numberOfWindows){
+		var i = 1;
+		while (i <= numberOfWindows){
+			var windows = 'Window '+i;
+			userData1[windows]='100';
+            i=i+1;
+		} 
+	}
+	
 
-    var userData2 ={
-      'Automatic Status': true,
-      Class: room_no,
-      ClassLux: 400,
-      Status: true,
-  }
+	var userData2 ={
+	'Automatic Status': true,
+	Class: room_no,
+	ClassLux: 400,
+	Status: true,
+	}
 
   var userData3 ={
     'Automatic Status': true,
