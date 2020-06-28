@@ -133,7 +133,7 @@ app.post('/addRoom', (req, res) => {
             i=i+1;
 		} 
 	}
-	
+	Windows(numberOfWindows);
 
 	var userData2 ={
 	'Automatic Status': true,
