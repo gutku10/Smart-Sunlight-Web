@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+        <title>Admin</title>
+        
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E=" crossorigin="anonymous"></script>
+            
+            
+            <!-- MATERIAL DESIGN ICONIC FONT -->
+        <link rel="stylesheet" href="/fonts/material-design-iconic-font/css/material-design-iconic-font.min.css">
+                
+                <!-- STYLE CSS -->
+        <link rel="stylesheet" href="css/style.css"> 
+
+        <script src="https://www.gstatic.com/firebasejs/7.15.4/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.15.4/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.15.4/firebase-database.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.15.4/firebase-storage.js"></script>
+</head>
+
+<body>
+<div class="wrapper" style="background-image: url('images/loginback.jpg')">
+<div class="inner">
+<div class="image-holder">
+<img src="images/login.jpg"></div>
+<form action="/signin" method="POST">
+            <h1>Login Form</h1>
+            <div class="form-wrapper">
+                <input type="email" name="email" placeholder="Email Address" id="email" class="form-control" />
+                 <i class="zmdi zmdi-lock"></i>
+            </div>
+                <div class="form-wrapper">
+                <input type="password" name="password" placeholder="Password" id="password" class="form-control" />
+                 <i class="zmdi zmdi-lock"></i>
+            </div>
+            <div class="form-group container-login100-form-btn">
+  
+                <button id="btn-login" type="submit">
+                Login
+                <i class="zmdi zmdi-arrow-right"></i> 
+              </button>
+            </div>
+        <div class="w-full text-center p-t-27 p-b-239" style="margin-top:49%; font-size: 15px;">
+        <span class="text-muted">
+        Forget
+        </span>
+        <a href="/resetPassword" class="text-dark">
+        user name/ password
+        </a>
+        </div>
+
+        </form><!-- form -->
+
+</div>
+</div>
+
+<script src="index.js"></script>
+<script>
+firebase.auth().onAuthStateChanged(function(user){
+    if(user){
+        window.location.href ="index.html";
+    }
+});
+</script>
+</body>
+</html>
