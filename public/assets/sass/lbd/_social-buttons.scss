@@ -1,0 +1,76 @@
+.btn-social {
+	padding: 8px 9px;
+
+	.fa {
+		font-size: 18px;
+		width: 20px;
+		vertical-align: middle;
+		display: inline-block;
+	}
+
+	&.btn-round {
+		padding: 8px;
+	}
+
+	&.btn-link {
+		padding: 8px 5px;
+		font-size: 16px;
+
+		.fa{
+			font-size: 20px;
+			position: relative;
+			top: -2px;
+			width: 24px;
+		}
+	}
+
+
+}
+
+.btn-facebook {
+	@include social-buttons-color($social-facebook, $social-states-facebook);
+}
+
+.btn-twitter {
+	@include social-buttons-color($social-twitter, $social-states-twitter);
+}
+
+.btn-pinterest {
+	@include social-buttons-color($social-pinterest, $social-states-pinterest);
+}
+
+.btn-google {
+	@include social-buttons-color($social-google, $social-states-google);
+}
+
+.btn-linkedin {
+	@include social-buttons-color($social-linkedin, $social-states-linkedin);
+}
+
+.btn-dribbble {
+	@include social-buttons-color($social-dribbble, $social-states-dribble);
+}
+
+.btn-github {
+	@include social-buttons-color($social-github, $social-states-github);
+}
+
+.btn-youtube {
+	@include social-buttons-color($social-youtube, $social-states-youtube);
+}
+
+.btn-stumbleupon {
+	@include social-buttons-color($social-stumbleupon, $social-states-stumbleupon);
+}
+
+.btn-reddit {
+	@include social-buttons-color($social-reddit, $social-states-reddit);
+}
+
+.btn-tumblr {
+	@include social-buttons-color($social-tumblr, $social-states-tumblr);
+}
+
+.btn-behance{
+	@include social-buttons-color($social-behance, $social-states-behance);
+}

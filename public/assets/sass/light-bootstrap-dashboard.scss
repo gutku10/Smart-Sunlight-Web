@@ -1,0 +1,68 @@
+/*!
+
+ =========================================================
+ * Light Bootstrap Dashboard - v2.0.1
+ =========================================================
+
+ * Product Page: http://www.creative-tim.com/product/light-bootstrap-dashboard
+ * Copyright 2017 Creative Tim (http://www.creative-tim.com)
+ * License (http://www.creative-tim.com/license)
+
+ =========================================================
+
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+ */
+
+@import "lbd/variables";
+@import "lbd/mixins";
+@import "lbd/modals";
+
+@import "lbd/typography";
+
+// Core CSS
+@import "lbd/misc";
+@import "lbd/sidebar-and-main-panel";
+@import "lbd/fixed-plugin";
+@import "lbd/modal";
+
+@import "lbd/buttons";
+@import "lbd/social-buttons";
+@import "lbd/inputs";
+
+@import "lbd/alerts";
+@import "lbd/tables";
+
+@import "lbd/checkbox-radio-switch";
+@import "lbd/navbars";
+@import "lbd/footers";
+@import "lbd/tags";
+@import "lbd/tabs-navs-pagination";
+@import "lbd/progress-bars";
+@import "lbd/sliders";
+
+
+
+// Fancy Stuff
+@import "lbd/dropdown";
+@import "lbd/cards";
+@import "lbd/chartist";
+@import "lbd/responsive";
+@import "lbd/bootstrap-switch";
+
+// Nucleo Icons
+@import "lbd/partial-nucleo-icons";
+
+//plugins css
+@import "lbd/plugins/animate";
+@import "lbd/plugins/sweetalert2";
+
+@import "lbd/plugins/jquery.jvectormap";
+@import "lbd/plugins/bootstrap-table";
+@import "lbd/plugins/datatables.net";
+@import "lbd/plugins/fullcalendar";
+@import "lbd/plugins/chartist";
+@import "lbd/plugins/perfect-scrollbar";
+@import "lbd/plugins/bootstrap-select";
+@import "lbd/plugins/datetime-picker";
+@import "lbd/plugins/nouislider";

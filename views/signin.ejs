@@ -1,67 +1,161 @@
-<!DOCTYPE html>
-<html>
-<head>
-        <title>Admin</title>
-        
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E=" crossorigin="anonymous"></script>
-            
-            
-            <!-- MATERIAL DESIGN ICONIC FONT -->
-        <link rel="stylesheet" href="/fonts/material-design-iconic-font/css/material-design-iconic-font.min.css">
-                
-                <!-- STYLE CSS -->
-        <link rel="stylesheet" href="css/style.css"> 
+<!doctype html>
+<html lang="en">
 
-        <script src="https://www.gstatic.com/firebasejs/7.15.4/firebase-app.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/7.15.4/firebase-auth.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/7.15.4/firebase-database.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/7.15.4/firebase-storage.js"></script>
+<head>
+    <meta charset="utf-8" />
+    <link rel="apple-touch-icon" sizes="76x76" href="../../assets/img/apple-icon.png">
+    <link rel="icon" type="image/png" href="../../assets/img/favicon.png">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>Smart Luminous System</title>
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+    <!--     Fonts and icons     -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" />
+    <!-- CSS Files -->
+    <link href="../../assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../../assets/css/light-bootstrap-dashboard.css?v=2.0.1" rel="stylesheet" />
+    <!-- CSS Just for demo purpose, don't include it in your project -->
+    <link href="../../assets/css/demo.css" rel="stylesheet" />
 </head>
 
 <body>
-<div class="wrapper" style="background-image: url('images/loginback.jpg')">
-<div class="inner">
-<div class="image-holder">
-<img src="images/login.jpg"></div>
-<form action="/signin" method="POST">
-            <h1>Login Form</h1>
-            <div class="form-wrapper">
-                <input type="email" name="email" placeholder="Email Address" id="email" class="form-control" />
-                 <i class="zmdi zmdi-lock"></i>
+    <div class="wrapper wrapper-full-page">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute">
+            <div class="container navbar-wrapper">
+                <div class="navbar-wrapper">
+                    <a class="navbar-brand" href="#pablo">Smart Luminous System Dashboard</a>
+                    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-bar burger-lines"></span>
+                        <span class="navbar-toggler-bar burger-lines"></span>
+                        <span class="navbar-toggler-bar burger-lines"></span>
+                    </button>
+                </div>
+                <div class="collapse navbar-collapse justify-content-end" id="navbar">
+                    <!-- <ul class="navbar-nav">
+                        <li class="nav-item  active ">
+                            <a href="login.html" class="nav-link">
+                                <i class="nc-icon nc-mobile"></i> Login
+                            </a>
+                        </li>
+                    
+                    </ul> -->
+                </div>
             </div>
-                <div class="form-wrapper">
-                <input type="password" name="password" placeholder="Password" id="password" class="form-control" />
-                 <i class="zmdi zmdi-lock"></i>
+        </nav>
+        <!-- End Navbar -->
+        <div class="full-page  section-image" data-color="" data-image="../../assets/img/login-page.jpg" ;>
+            <!--   you can change the color of the filter page using: data-color="blue | purple | green | orange | red | rose " -->
+            <div class="content">
+                <div class="container">
+                    <div class="col-md-4 col-sm-6 ml-auto mr-auto">
+                        <form class="form" method="POST" action="/signin">
+                            <div class="card card-login card-hidden">
+                                <div class="card-header ">
+                                    <h3 class="header text-center">Login</h3>
+                                </div>
+                                <div class="card-body ">
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <label>Email address</label>
+                                            <input type="email" name="email" id="email" placeholder="Enter email" class="form-control">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Password</label>
+                                            <input type="password" name="password" id="password" placeholder="Password" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer ml-auto mr-auto">
+                                    <button type="submit" class="btn btn-warning btn-wd">Login</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="text-center" style="color:white">
+                    <script>
+                        document.write(new Date())
+                    </script>
+                </div>
             </div>
-            <div class="form-group container-login100-form-btn">
-  
-                <button id="btn-login" type="submit">
-                Login
-                <i class="zmdi zmdi-arrow-right"></i> 
-              </button>
-            </div>
-        <div class="w-full text-center p-t-27 p-b-239" style="margin-top:49%; font-size: 15px;">
-        <span class="text-muted">
-        Forget
-        </span>
-        <a href="/resetPassword" class="text-dark">
-        user name/ password
-        </a>
         </div>
-
-        </form><!-- form -->
-
-</div>
-</div>
-
-<script src="index.js"></script>
-<script>
-firebase.auth().onAuthStateChanged(function(user){
-    if(user){
-        window.location.href ="index.html";
-    }
-});
-</script>
+        <footer class="footer">
+            <div class="container">
+                <nav>
+                    <ul class="footer-menu">
+                        <li>
+                            <a href="#">
+                                About Project
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                Team
+                            </a>
+                        </li>
+                    </ul>
+                    <p class="copyright text-center">
+                        ©
+                        <script>
+                            document.write(new Date().getFullYear())
+                        </script>
+                        <a href="#">Thapar Institute of Engineering and Technology</a>
+                    </p>
+                </nav>
+            </div>
+        </footer>
+    </div>
 </body>
+<!--   Core JS Files   -->
+<script src="../../assets/js/core/jquery.3.2.1.min.js" type="text/javascript"></script>
+<script src="../../assets/js/core/popper.min.js" type="text/javascript"></script>
+<script src="../../assets/js/core/bootstrap.min.js" type="text/javascript"></script>
+<!--  Plugin for Switches, full documentation here: http://www.jque.re/plugins/version3/bootstrap.switch/ -->
+<script src="../../assets/js/plugins/bootstrap-switch.js"></script>
+<!--  Google Maps Plugin    -->
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?YOUR_KEY_HERE"></script>
+<!--  Chartist Plugin  -->
+<script src="../../assets/js/plugins/chartist.min.js"></script>
+<!--  Notifications Plugin    -->
+<script src="../../assets/js/plugins/bootstrap-notify.js"></script>
+<!--  jVector Map  -->
+<script src="../../assets/js/plugins/jquery-jvectormap.js" type="text/javascript"></script>
+<!--  Plugin for Date Time Picker and Full Calendar Plugin-->
+<script src="../../assets/js/plugins/moment.min.js"></script>
+<!--  DatetimePicker   -->
+<script src="../../assets/js/plugins/bootstrap-datetimepicker.js"></script>
+<!--  Sweet Alert  -->
+<script src="../../assets/js/plugins/sweetalert2.min.js" type="text/javascript"></script>
+<!--  Tags Input  -->
+<script src="../../assets/js/plugins/bootstrap-tagsinput.js" type="text/javascript"></script>
+<!--  Sliders  -->
+<script src="../../assets/js/plugins/nouislider.js" type="text/javascript"></script>
+<!--  Bootstrap Select  -->
+<script src="../../assets/js/plugins/bootstrap-selectpicker.js" type="text/javascript"></script>
+<!--  jQueryValidate  -->
+<script src="../../assets/js/plugins/jquery.validate.min.js" type="text/javascript"></script>
+<!--  Plugin for the Wizard, full documentation here: https://github.com/VinceG/twitter-bootstrap-wizard -->
+<script src="../../assets/js/plugins/jquery.bootstrap-wizard.js"></script>
+<!--  Bootstrap Table Plugin -->
+<script src="../../assets/js/plugins/bootstrap-table.js"></script>
+<!--  DataTable Plugin -->
+<script src="../../assets/js/plugins/jquery.dataTables.min.js"></script>
+<!--  Full Calendar   -->
+<script src="../../assets/js/plugins/fullcalendar.min.js"></script>
+<!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
+<script src="../../assets/js/light-bootstrap-dashboard.js?v=2.0.1" type="text/javascript"></script>
+<!-- Light Dashboard DEMO methods, don't include it in your project! -->
+<script src="../../assets/js/demo.js"></script>
+<script>
+    $(document).ready(function() {
+        demo.checkFullPageBackgroundImage();
+
+        setTimeout(function() {
+            // after 1000 ms we add the class animated to the login/register card
+            $('.card').removeClass('card-hidden');
+        }, 700)
+    });
+</script>
+
 </html>

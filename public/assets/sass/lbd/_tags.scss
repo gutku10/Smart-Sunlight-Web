@@ -1,0 +1,136 @@
+
+.bootstrap-tagsinput {
+    // height: $height-base;
+    overflow-y: auto;
+    text-align: left;
+    .badge {
+        // @extend .animation-transition-ultra-fast;
+        cursor: pointer;
+        overflow: hidden;
+        position: relative;
+        margin: 5px 3px 5px 0;
+        padding: 4px 18px !important;
+        @include label-style();
+        background-color: transparent;
+        border: 1px solid $default-color;
+        font-size: 12px !important;
+
+        &.badge-blue,
+        &.badge-blue .tagsinput-remove-link{
+             @include label-color($primary-color);
+        }
+        &.badge-azure,
+        &.badge-azure .tagsinput-remove-link{
+             @include label-color($info-color);
+        }
+        &.badge-green .tag,
+        &.badge-green .tagsinput-remove-link{
+             @include label-color($success-color);
+        }
+        &.badge-orange .tag,
+        &.badge-orange .tagsinput-remove-link{
+             @include label-color($warning-color);
+        }
+        &.badgebadge-red .tag,
+        &.badgebadge-red .tagsinput-remove-link{
+             @include label-color($danger-color);
+        }
+
+        .badge-remove-link{
+            @include transition(60ms, ease-in);
+        }
+
+    }
+    .badge:hover{
+        padding-left: 10px;
+        padding-right: 18px;
+        opacity: 1 !important;
+        visibility: visible !important;
+        .badge-remove-link{
+            opacity: 1 !important;
+            color: black;
+            padding-right: 6px;
+        }
+
+    }
+
+    .tagsinput-add {
+        color: $black-color;
+        cursor: pointer;
+        display: inline-block;
+        font-size: 14px;
+        padding: 5px 6px;
+        vertical-align: top;
+        @include opacity(0.8);
+
+        &:hover,
+        &:focus{
+            @include opacity(1);
+        }
+    }
+    .tagsinput-add:before {
+        content: "\f067";
+        font-family: "FontAwesome";
+    }
+
+    .badge-remove-link {
+        // @extend .animation-transition-ultra-fast;
+        cursor: pointer;
+        font-size: 12px;
+        padding: 3px 0;
+        position: absolute;
+        right: -3px;
+        opacity: 0;
+        text-align: right;
+        text-decoration: none;
+        top: 0;
+        width: 100%;
+        z-index: 2;
+    }
+    .tag:hover .tagsinput-remove-link {
+        opacity: 1;
+        padding-right: 6px;
+    }
+    .badge-remove-link:before {
+        content: "\f00d";
+        font-family: "FontAwesome";
+        color: $info-color;
+    }
+    .tagsinput-add-container {
+        display: inline-block;
+        vertical-align: middle;
+    }
+    input{
+        background: transparent;
+        border: none;
+        color: $black-color;
+        margin: 0;
+        outline: medium none !important;
+        padding: 0 0 0 5px;
+        vertical-align: top;
+        width: 40px;
+        height: 30px;
+    }
+
+
+    &.badge-fill{
+        & .badge-blue{
+            @include label-color-fill($primary-color);
+        }
+        & .badge-azure{
+            @include label-color-fill($info-color);
+        }
+        &.badge-green{
+            @include label-color-fill($success-color);
+        }
+        &.badge-orange{
+            @include label-color-fill($warning-color);
+        }
+        &.badge-red{
+            @include label-color-fill($danger-color);
+        }
+    }
+    &.badge-fill .tagsinput-remove-link{
+        color: $white-color;
+    }
+}

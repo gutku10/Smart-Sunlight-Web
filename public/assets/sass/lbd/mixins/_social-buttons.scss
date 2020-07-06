@@ -1,0 +1,57 @@
+@mixin social-buttons-color ($btn-color, $btn-states-color){
+  border-color: $btn-color;
+  background-color: $btn-color;
+  color: $white-color;
+
+  &:hover,
+  &:focus,
+  &:active,
+  &.active,
+  .open > &.dropdown-toggle {
+    background-color: $btn-states-color;
+    color: $white-color;
+    border-color: $btn-color;
+  }
+
+  &:disabled,
+  &[disabled],
+  &.disabled {
+    background-color: $transparent-bg;
+    border-color: $btn-color;
+  }
+
+  &.btn-outline{
+    color: $btn-color;
+    background-color: $transparent-bg;
+    border: 1px solid $btn-color;
+
+    &:hover,
+    &:focus,
+    &:active,
+    &.active,
+    .open > &.dropdown-toggle{
+        background-color: $btn-states-color;
+        color: $white-color;
+        border: 1px solid $btn-states-color;
+
+    }
+  }
+  &.btn-link {
+    color: $btn-color;
+    background-color: $transparent-bg;
+    border: 1px solid $btn-color;
+
+    &:hover,
+    &:focus,
+    &:active,
+    &.active,
+    .open > &.dropdown-toggle{
+        background-color: $transparent-bg;
+        color: $btn-states-color;
+        border: 1px solid $btn-states-color;
+
+    }
+  }
+
+
+}
