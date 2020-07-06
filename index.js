@@ -51,11 +51,8 @@ firebase.initializeApp(firebaseConfig);
 firebase.auth.Auth.Persistence.LOCAL;
 
 app.get('/', (req, res) => {
-  if (!req.user) {
-    res.render('signin');
-  } else {
-    res.render('addRoom');
-  }
+    res.render('dashboard');
+
 });
 
 app.post('/signin', (req, res) => {
@@ -67,7 +64,9 @@ app.post('/signin', (req, res) => {
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then(() => {
-        res.render('addRoom');
+      
+        res.redirect('/');
+   
       });
 
     result.catch(function (error) {
@@ -106,7 +105,7 @@ app.post('/resetPassword', (req, res) => {
 
 app.get('/staff', (req, res) => {
   var admin = firebase.database().ref("Admin")
-  admin.on("value", data => {
+  admin.once("value", data => {
     if(data.val()){
       var names = Object.getOwnPropertyNames(data.val())
       res.render('staff',{ adminNames : names ,data : data.val() });
@@ -134,7 +133,8 @@ app.post('/staff', (req, res) => {
   };
 
   root2.set(userData);
-  res.redirect("/staff")
+  res.redirect('/staff');
+  console.log('abhi');
 });
 
 app.get('/addRoom', (req, res) => {
@@ -228,6 +228,8 @@ app.post('/addRoom', (req, res) => {
   room_sensor.set(userData3);
   window_sensor.set(userData4);
   show.set(userData9);
+
+  res.redirect('/manage');
 });
 
 app.get('/manage',  (req, res) => {
