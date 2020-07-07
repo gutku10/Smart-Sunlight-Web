@@ -68,7 +68,7 @@ app.post('/', (req, res) => {
 
     result.catch(function (error) {
       // req.flash('error', errorMessage);
-      res.redirect('/dashboard');
+      res.redirect('/');
     });
   } else {
     req.flash('error', 'Please fill details');
