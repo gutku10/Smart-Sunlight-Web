@@ -104,40 +104,54 @@ app.post('/resetPassword', (req, res) => {
 });
 
 app.get('/',requireLogin, (req, res) => {
-  var total = firebase.database().ref('Total');
-  total.once('value', (data) => {
-    if (data.val()) {
-      res.render('dashboard', {data1:data.val()});
-    } else {
-      res.render('dashboard');
-    }
-  });
+  var user = firebase.auth().currentUser;
+  if(user != null){
+    
+    var total = firebase.database().ref('Total');
+    total.once('value', (data) => {
+      if (data.val()) {
+        res.render('dashboard', {data1:data.val(), user: user.displayName});
+      } else {
+        res.render('dashboard');
+      }
+    });
+  }
+  
+
 });
 
 
 app.get('/members', requireLogin, (req, res) => {
-  var admin = firebase.database().ref('Teachers');
-  admin.once('value', (data) => {
-    if (data.val()) {
-      var teachers = Object.getOwnPropertyNames(data.val());
-      console.log(teachers)
-      res.render('members', {teacherNames: teachers, data: data.val()});
-    } else {
-      res.send('i m here');
-    }
-  });
+  var user = firebase.auth().currentUser;
+  if(user != null){
+    var admin = firebase.database().ref('Teachers');
+    admin.once('value', (data) => {
+      if (data.val()) {
+        var teachers = Object.getOwnPropertyNames(data.val());
+        console.log(teachers)
+        res.render('members', {teacherNames: teachers, data: data.val(), user:user.displayName});
+      } else {
+        res.send('i m here');
+      }
+    });
+  }
+  
 });
 
 app.get('/staff',requireLogin, (req, res) => {
-  var admin = firebase.database().ref('Admin');
+  var user = firebase.auth().currentUser;
+  if(user != null){
+    var admin = firebase.database().ref('Admin');
   admin.once('value', (data) => {
     if (data.val()) {
       var names = Object.getOwnPropertyNames(data.val());
-      res.render('staff', {adminNames: names, data: data.val()});
+      res.render('staff', {adminNames: names, data: data.val(),user:user.displayName});
     } else {
       res.send('i m here');
     }
   });
+  }
+  
 });
 
 app.post('/staff', (req, res) => {
@@ -147,7 +161,13 @@ app.post('/staff', (req, res) => {
   var sname = req.body.sname;
   var dept = req.body.dept;
   var auth = req.body.auth;
-  firebase.auth().createUserWithEmailAndPassword(email, password);
+  firebase.auth().createUserWithEmailAndPassword(email, password)
+  .then(result => {
+    return result.user.  updateProfile({
+      displayName: fname + " " + sname
+    })
+  });
+
   var root = firebase.database().ref().child(auth);
 
   var mailval = email.toString();
@@ -168,7 +188,11 @@ app.post('/staff', (req, res) => {
 });
 
 app.get('/addRoom',requireLogin, (req, res) => {
-  res.render('addRoom');
+  var user = firebase.auth().currentUser;
+  if(user != null){
+    res.render('addRoom',{user:user.displayName});
+  }
+
 });
 
 app.post('/addRoom', (req, res) => {
@@ -263,42 +287,49 @@ app.post('/addRoom', (req, res) => {
 });
 
 app.get('/manage',requireLogin, (req, res) => {
-  var data;
-  var rooms = firebase.database().ref('Rooms');
-  rooms.once('value', (data) => {
-    if (data.val()) {
-      var accessedData = data.val();
-      var blocks = Object.getOwnPropertyNames(accessedData);
-      var rooms = [];
-      blocks.forEach((blockName) => {
-        rooms.push({
-          blockName: blockName,
-          roomNames: Object.getOwnPropertyNames(accessedData[blockName]),
+  var user = firebase.auth().currentUser;
+  if(user != null){
+    var data;
+    var rooms = firebase.database().ref('Rooms');
+    rooms.once('value', (data) => {
+      if (data.val()) {
+        var accessedData = data.val();
+        var blocks = Object.getOwnPropertyNames(accessedData);
+        var rooms = [];
+        blocks.forEach((blockName) => {
+          rooms.push({
+            blockName: blockName,
+            roomNames: Object.getOwnPropertyNames(accessedData[blockName]),
+          });
         });
-      });
-      var roomData = accessedData[rooms[0].blockName][rooms[0].roomNames[0]];
-      var leds = Object.getOwnPropertyNames(roomData.LEDs);
-      var windowSensor = Object.getOwnPropertyNames(roomData['Window Sensor']);
-      var roomSensor = Object.getOwnPropertyNames(roomData['Room Sensor']);
-      var curtains = Object.getOwnPropertyNames(roomData['Curtains']);
-      res.render('manage', {
-        blocks,
-        roomData,
-        rooms,
-        leds,
-        windowSensor,
-        roomSensor,
-        curtains,
-      });
-    } else {
-      console.log('i m in else');
-      res.send('error');
-    }
-  });
+        var roomData = accessedData[rooms[0].blockName][rooms[0].roomNames[0]];
+        var leds = Object.getOwnPropertyNames(roomData.LEDs);
+        var windowSensor = Object.getOwnPropertyNames(roomData['Window Sensor']);
+        var roomSensor = Object.getOwnPropertyNames(roomData['Room Sensor']);
+        var curtains = Object.getOwnPropertyNames(roomData['Curtains']);
+        res.render('manage', {
+          blocks,
+          roomData,
+          rooms,
+          leds,
+          windowSensor,
+          roomSensor,
+          curtains,
+          user: user.displayName
+        });
+      } else {
+        console.log('i m in else');
+        res.send('error');
+      }
+    });
+  }
+  
 });
 
 app.get('/managed-:block-:room', (req, res) => {
-  var data;
+  var user = firebase.auth().currentUser;
+  if(user != null){
+    var data;
   var rooms = firebase.database().ref('Rooms');
   rooms.once('value', (data) => {
     if (data.val()) {
@@ -333,52 +364,62 @@ app.get('/managed-:block-:room', (req, res) => {
         windowSensor,
         roomSensor,
         curtains,
+        user:user.displayName
       });
     } else {
       console.log('i m in else');
       res.send('error');
     }
   });
+  }
+
+  
 });
 
 app.get('/manage-:block', (req, res) => {
-  var data;
-  var rooms = firebase.database().ref('Rooms');
-  rooms.once('value', (data) => {
-    if (data.val()) {
-      var accessedData = data.val();
-      var blocks = Object.getOwnPropertyNames(accessedData);
-      var rooms = [];
-      blocks.forEach((blockName) => {
-        if (blockName == req.params.block) {
-          rooms.push({
-            blockName: blockName,
-            roomNames: Object.getOwnPropertyNames(accessedData[blockName]),
-          });
-        }
-      });
-      var roomData = accessedData[req.params.block][rooms[0].roomNames[0]];
-      var leds = Object.getOwnPropertyNames(roomData.LEDs);
-      var windowSensor = Object.getOwnPropertyNames(roomData['Window Sensor']);
-      var roomSensor = Object.getOwnPropertyNames(roomData['Room Sensor']);
-      var curtains = Object.getOwnPropertyNames(roomData['Curtains']);
-      res.render('manage', {
-        blocks,
-        roomData,
-        rooms,
-        leds,
-        windowSensor,
-        roomSensor,
-        curtains,
-      });
-    } else {
-      console.log('i m in else');
-      res.send('error');
-    }
-  });
+  var user = firebase.auth().currentUser;
+  if(user != null){
+    var data;
+    var rooms = firebase.database().ref('Rooms');
+    rooms.once('value', (data) => {
+      if (data.val()) {
+        var accessedData = data.val();
+        var blocks = Object.getOwnPropertyNames(accessedData);
+        var rooms = [];
+        blocks.forEach((blockName) => {
+          if (blockName == req.params.block) {
+            rooms.push({
+              blockName: blockName,
+              roomNames: Object.getOwnPropertyNames(accessedData[blockName]),
+            });
+          }
+        });
+        var roomData = accessedData[req.params.block][rooms[0].roomNames[0]];
+        var leds = Object.getOwnPropertyNames(roomData.LEDs);
+        var windowSensor = Object.getOwnPropertyNames(roomData['Window Sensor']);
+        var roomSensor = Object.getOwnPropertyNames(roomData['Room Sensor']);
+        var curtains = Object.getOwnPropertyNames(roomData['Curtains']);
+        res.render('manage', {
+          blocks,
+          roomData,
+          rooms,
+          leds,
+          windowSensor,
+          roomSensor,
+          curtains,
+          user:user.displayName
+        });
+      } else {
+        console.log('i m in else');
+        res.send('error');
+      }
+    });
+  }
+  
 });
 
 app.post('/manage' ,(req, res) => {
+
   var rooms = firebase.database().ref('Rooms');
   rooms.once('value', (data) => {
     if (data.val()) {
