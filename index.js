@@ -50,11 +50,11 @@ var firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 firebase.auth.Auth.Persistence.LOCAL;
 
-app.get('/', (req, res) => {
+app.get('/signin', (req, res) => {
   res.render('signin');
 });
 
-app.post('/', (req, res) => {
+app.post('/signin', (req, res) => {
   var email = req.body.email;
   var password = req.body.password;
 
@@ -63,12 +63,12 @@ app.post('/', (req, res) => {
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then(() => {
-        res.redirect('/dashboard');
+        res.redirect('/');
       });
 
     result.catch(function (error) {
       // req.flash('error', errorMessage);
-      res.redirect('/');
+      res.redirect('/signin');
     });
   } else {
     req.flash('error', 'Please fill details');
@@ -100,7 +100,7 @@ app.post('/resetPassword', (req, res) => {
     });
 });
 
-app.get('/dashboard', (req, res) => {
+app.get('/',requireLogin, (req, res) => {
   var total = firebase.database().ref('Total');
   total.once('value', (data) => {
     if (data.val()) {
@@ -112,7 +112,7 @@ app.get('/dashboard', (req, res) => {
 });
 
 
-app.get('/members', (req, res) => {
+app.get('/members', requireLogin, (req, res) => {
   var admin = firebase.database().ref('Teachers');
   admin.once('value', (data) => {
     if (data.val()) {
@@ -125,7 +125,7 @@ app.get('/members', (req, res) => {
   });
 });
 
-app.get('/staff', (req, res) => {
+app.get('/staff',requireLogin, (req, res) => {
   var admin = firebase.database().ref('Admin');
   admin.once('value', (data) => {
     if (data.val()) {
@@ -139,7 +139,6 @@ app.get('/staff', (req, res) => {
 
 app.post('/staff', (req, res) => {
   var email = req.body.email;
-  var abhi = req.body.email;
   var password = req.body.Password;
   var fname = req.body.fname;
   var sname = req.body.sname;
@@ -147,9 +146,7 @@ app.post('/staff', (req, res) => {
   var auth = req.body.auth;
   firebase.auth().createUserWithEmailAndPassword(email, password);
   var root = firebase.database().ref().child(auth);
-  // var n = req.body.email.lastIndexOf("@");
-  // var res = abhi.slice(0, n);
-  // console.log(res);
+
   var mailval = email.toString();
   var n = mailval.indexOf('@');
   var root2 = root.child(email.substring(0,n));
@@ -167,7 +164,7 @@ app.post('/staff', (req, res) => {
   res.redirect('/staff');
 });
 
-app.get('/addRoom', (req, res) => {
+app.get('/addRoom',requireLogin, (req, res) => {
   res.render('addRoom');
 });
 
@@ -262,7 +259,7 @@ app.post('/addRoom', (req, res) => {
   res.redirect('/manage');
 });
 
-app.get('/manage', (req, res) => {
+app.get('/manage',requireLogin, (req, res) => {
   var data;
   var rooms = firebase.database().ref('Rooms');
   rooms.once('value', (data) => {
@@ -378,7 +375,7 @@ app.get('/manage-:block', (req, res) => {
   });
 });
 
-app.post('/manage', (req, res) => {
+app.post('/manage' ,(req, res) => {
   var rooms = firebase.database().ref('Rooms');
   rooms.once('value', (data) => {
     if (data.val()) {

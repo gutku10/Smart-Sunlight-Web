@@ -1,7 +1,13 @@
-module.exports = (req, res, next) => {
-    if(!req.user){
-        return res.render('signin');
-    }
 
+const firebase = require('firebase/app');
+require('firebase/auth');
+
+
+module.exports = (req, res, next) => {
+    firebase.auth().onAuthStateChanged(function(user) {
+        if (!user) {
+            return res.render('signin');
+        } 
+        });
     next();
 };
