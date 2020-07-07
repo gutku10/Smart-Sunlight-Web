@@ -5,6 +5,7 @@ require('firebase/auth');
 var flash = require('connect-flash');
 app = express();
 const requireLogin = require('./middlewares/requirelogin');
+// const { app } = require('firebase/app');
 
 
 require('firebase/database');
@@ -55,6 +56,10 @@ app.get('/', (req, res) => {
 
 });
 
+app.get('/signin', (req,res) => {
+  res.render('signin');
+})
+
 app.post('/signin', (req, res) => {
   var email = req.body.email;
   var password = req.body.password;
@@ -64,13 +69,13 @@ app.post('/signin', (req, res) => {
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then(() => {
+            res.redirect('/');
+        });
       
-        res.redirect('/');
-   
-      });
+      
 
     result.catch(function (error) {
-      req.flash('error', errorMessage);
+      // req.flash('error', errorMessage);
       res.redirect('/');
     });
   } else {
