@@ -18,7 +18,7 @@
     <link href="../../assets/css/demo.css" rel="stylesheet" />
 </head>
 
-<body>
+<body>  
     <div class="wrapper">
         <div class="sidebar" data-color="" data-image="../assets/img/sidebar-5.jpg">
             <!--
@@ -105,7 +105,7 @@
                                 <i class="fa fa-navicon visible-on-sidebar-mini"></i>
                             </button>
                         </div>
-                        <a class="navbar-brand" href="#pablo"> System Setup </a>
+                        <a class="navbar-brand" href="#pablo"> Members List </a>
                     </div>
                     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-bar burger-lines"></span>
@@ -117,7 +117,7 @@
                             <form class="navbar-form navbar-left navbar-search-form" role="search">
                                 <div class="input-group">
                                     <i class="nc-icon nc-zoom-split"></i>
-                                    <input type="text" value="" name="" required class="form-control" placeholder="Search...">
+                                    <input type="text" value="" class="form-control" placeholder="Search...">
                                 </div>
                             </form>
                         </ul>
@@ -180,99 +180,37 @@
             <div class="content">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-md-6">
-                            <div class="card stacked-form">
-                                <div class="card-header ">
-                                    <h4 class="card-title">Add New</h4>
-                                </div>
-                                <div class="card-body ">
-                                    <form method="POST" action="/addRoom">
-                                        <div class="form-group">
-                                            <label>Block</label>
-                                            <input type="text" placeholder="Enter Block" name="block" required class="form-control">
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Class</label>
-                                            <input type="text" placeholder="Enter Class" name="room_no" required class="form-control">
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Class LUX</label>
-                                            <input type="number" placeholder="LUX Intensity" name="class_lux" required class="form-control">
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Curtains</label>
-                                            <input type="number" placeholder="Number of Curtains" name="curtains" required class="form-control">
-                                        </div>
-                                        <div class="form-group">
-                                            <label>LEDs</label>
-                                            <input type="number" placeholder="Enter LEDs" name="leds" required class="form-control">
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Window Sensors</label>
-                                            <input type="number" placeholder="Number of Window Sensors" name="window_sensor" required class="form-control">
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Room Sensors</label>
-                                            <input type="number" placeholder="Number of Room Sensors" name="room_sensor" required class="form-control">
-                                        </div>
-                                        <select id="status" name="status" required class="form-control">
-                                            <option value="" disabled selected>Default Status</option>
-                                            <option value="True">True</option>
-                                            <option value="False">False</option>
-                                        </select>
-                                        <div class="card-footer ">
-                                            <button type="submit" class="btn btn-fill btn-info">Add</button>
-                                        </div>
-                                    </form>
-                                </div>
-                                
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="card stacked-form">
-                                <div class="card-header ">
-                                    <h4 class="card-title">Update Existing</h4>
-                                </div>
-                                <div class="card-body ">
-                                    <form method="#" action="#">
-                                        <div class="form-group">
-                                            <label>Block</label>
-                                            <select name="" required class="form-control" placeholder="City" value="Admin/Staff">
-                                                <option value="Block">Block-E</option>
-                                                <option value="Block">Block-F</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Class</label>
-                                            <select name="" required class="form-control" placeholder="City" value="Admin/Staff">
-                                                <option value="Class">E-205</option>
-                                                <option value="Class">E-206</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Class LUX</label>
-                                            <input type="number" placeholder="LUX Intensity" name="" required class="form-control">
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Curtains</label>
-                                            <input type="number" placeholder="Number of Curtains" name="" required class="form-control">
-                                        </div>
-                                        <div class="form-group">
-                                            <label>LEDs</label>
-                                            <input type="number" placeholder="Enter LEDs" name="" required class="form-control">
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Window Sensors</label>
-                                            <input type="number" placeholder="Number of Window Sensors" name="" required class="form-control">
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Room Sensors</label>
-                                            <input type="number" placeholder="Number of Room Sensors" name="" required class="form-control">
-                                        </div>
-                                    </form>
-                                </div>
-                                <div class="card-footer ">
-                                    <button type="submit" class="btn btn-fill btn-info">Update</button>
+                        <div class="col-md-12">
+                            <div class="card bootstrap-table">
+                                <div class="card-body table-full-width">
+                                    <div class="toolbar">
+                                        <!--        Here you can write extra buttons/actions for the toolbar              -->
+                                    </div>
+                                    <table id="bootstrap-table" class="table">
+                                        <thead>
+                                        </thead>
+
+                                        <th data-field="id" class="text-center">ID</th>
+                                        <th data-field="name" data-sortable="true">Name</th>
+                                        <th data-field="Email" data-sortable="true">Email</th>
+                                        <th data-field="Departt" data-sortable="true">Departt</th>
+                                        
+                                        </thead>
+                                        <tbody>
+                                            <% var count = 1; %>
+                                            <% teacherNames.forEach(eachAdmin => { %>
+                                            <tr>
+                                             
+                                                <td class="text-center"><%= count %></td>
+                                                <td><%= data[eachAdmin].Name %></td>
+                                                <td><%= data[eachAdmin].Email %></td>
+                                                <td><%= data[eachAdmin].Department %></td>
+                                                <td></td>
+                                            </tr>
+                                            <% count = count + 1 %>
+                                            <%} ) %>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -466,5 +404,83 @@
 <script src="../../assets/js/light-bootstrap-dashboard.js?v=2.0.1" type="text/javascript"></script>
 <!-- Light Dashboard DEMO methods, don't include it in your project! -->
 <script src="../../assets/js/demo.js"></script>
+<script type="text/javascript">
+    var $table = $('#bootstrap-table');
+
+    function operateFormatter(value, row, index) {
+        return [
+            '<a rel="tooltip" title="View" class="btn btn-link btn-info table-action view" href="javascript:void(0)">',
+            '<i class="fa fa-image"></i>',
+            '</a>',
+            '<a rel="tooltip" title="Edit" class="btn btn-link btn-warning table-action edit" href="javascript:void(0)">',
+            '<i class="fa fa-edit"></i>',
+            '</a>',
+            '<a rel="tooltip" title="Remove" class="btn btn-link btn-danger table-action remove" href="javascript:void(0)">',
+            '<i class="fa fa-remove"></i>',
+            '</a>'
+        ].join('');
+    }
+
+    $().ready(function() {
+        window.operateEvents = {
+            'click .view': function(e, value, row, index) {
+                info = JSON.stringify(row);
+
+                swal('You click view icon, row: ', info);
+                console.log(info);
+            },
+            'click .edit': function(e, value, row, index) {
+                info = JSON.stringify(row);
+
+                swal('You click edit icon, row: ', info);
+                console.log(info);
+            },
+            'click .remove': function(e, value, row, index) {
+                console.log(row);
+                $table.bootstrapTable('remove', {
+                    field: 'id',
+                    values: [row.id]
+                });
+            }
+        };
+
+        $table.bootstrapTable({
+            toolbar: ".toolbar",
+            clickToSelect: true,
+            showRefresh: true,
+            search: true,
+            showToggle: true,
+            showColumns: true,
+            pagination: true,
+            searchAlign: 'left',
+            pageSize: 8,
+            clickToSelect: false,
+            pageList: [8, 10, 25, 50, 100],
+
+            formatShowingRows: function(pageFrom, pageTo, totalRows) {
+                //do nothing here, we don't want to show the text "showing x of y from..."
+            },
+            formatRecordsPerPage: function(pageNumber) {
+                return pageNumber + " rows visible";
+            },
+            icons: {
+                refresh: 'fa fa-refresh',
+                toggle: 'fa fa-th-list',
+                columns: 'fa fa-columns',
+                detailOpen: 'fa fa-plus-circle',
+                detailClose: 'fa fa-minus-circle'
+            }
+        });
+
+        //activate the tooltips after the data table is initialized
+        $('[rel="tooltip"]').tooltip();
+
+        $(window).resize(function() {
+            $table.bootstrapTable('resetView');
+        });
+
+
+    });
+</script>
 
 </html>

@@ -7,7 +7,6 @@ app = express();
 const requireLogin = require('./middlewares/requirelogin');
 // const { app } = require('firebase/app');
 
-
 require('firebase/database');
 
 app.use(
@@ -39,28 +38,23 @@ var firebaseConfig = {
   // appId: '1:424219359183:web:58d6a6aa0bec0679edc4ba',
   // measurementId: 'G-XC0Y4EHTVB',
 
-  apiKey: "AIzaSyCUwlWgDhnqo_iGNCKG309wI0VyV2eMlFk",
-  authDomain: "smart-sunlight.firebaseapp.com",
-  databaseURL: "https://smart-sunlight.firebaseio.com",
-  projectId: "smart-sunlight",
-  storageBucket: "smart-sunlight.appspot.com",
-  messagingSenderId: "281416114832",
-  appId: "1:281416114832:web:06ff97ef01208c1889ee15"
+  apiKey: 'AIzaSyCUwlWgDhnqo_iGNCKG309wI0VyV2eMlFk',
+  authDomain: 'smart-sunlight.firebaseapp.com',
+  databaseURL: 'https://smart-sunlight.firebaseio.com',
+  projectId: 'smart-sunlight',
+  storageBucket: 'smart-sunlight.appspot.com',
+  messagingSenderId: '281416114832',
+  appId: '1:281416114832:web:06ff97ef01208c1889ee15',
 };
 
 firebase.initializeApp(firebaseConfig);
 firebase.auth.Auth.Persistence.LOCAL;
 
 app.get('/', (req, res) => {
-    res.render('dashboard');
-
+  res.render('signin');
 });
 
-app.get('/signin', (req,res) => {
-  res.render('signin');
-})
-
-app.post('/signin', (req, res) => {
+app.post('/', (req, res) => {
   var email = req.body.email;
   var password = req.body.password;
 
@@ -69,14 +63,12 @@ app.post('/signin', (req, res) => {
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then(() => {
-            res.redirect('/');
-        });
-      
-      
+        res.redirect('/dashboard');
+      });
 
     result.catch(function (error) {
       // req.flash('error', errorMessage);
-      res.redirect('/');
+      res.redirect('/dashboard');
     });
   } else {
     req.flash('error', 'Please fill details');
@@ -108,21 +100,46 @@ app.post('/resetPassword', (req, res) => {
     });
 });
 
-app.get('/staff', (req, res) => {
-  var admin = firebase.database().ref("Admin")
-  admin.once("value", data => {
-    if(data.val()){
-      var names = Object.getOwnPropertyNames(data.val())
-      res.render('staff',{ adminNames : names ,data : data.val() });
-    }else{
-      res.send("i m here")
+app.get('/dashboard', (req, res) => {
+  var total = firebase.database().ref('Total');
+  total.once('value', (data) => {
+    if (data.val()) {
+      res.render('dashboard', {data1:data.val()});
+    } else {
+      res.render('dashboard');
     }
-  } )
+  });
+});
+
+
+app.get('/members', (req, res) => {
+  var admin = firebase.database().ref('Teachers');
+  admin.once('value', (data) => {
+    if (data.val()) {
+      var teachers = Object.getOwnPropertyNames(data.val());
+      console.log(teachers)
+      res.render('members', {teacherNames: teachers, data: data.val()});
+    } else {
+      res.send('i m here');
+    }
+  });
+});
+
+app.get('/staff', (req, res) => {
+  var admin = firebase.database().ref('Admin');
+  admin.once('value', (data) => {
+    if (data.val()) {
+      var names = Object.getOwnPropertyNames(data.val());
+      res.render('staff', {adminNames: names, data: data.val()});
+    } else {
+      res.send('i m here');
+    }
+  });
 });
 
 app.post('/staff', (req, res) => {
-  
   var email = req.body.email;
+  var abhi = req.body.email;
   var password = req.body.Password;
   var fname = req.body.fname;
   var sname = req.body.sname;
@@ -130,16 +147,22 @@ app.post('/staff', (req, res) => {
   var auth = req.body.auth;
   firebase.auth().createUserWithEmailAndPassword(email, password);
   var root = firebase.database().ref().child(auth);
+  // var n = req.body.email.lastIndexOf("@");
+  // var res = abhi.slice(0, n);
+  // console.log(res);
   var root2 = root.child(fname + ' ' + sname);
   var userData = {
+    Name: fname + ' ' + sname,
     Email: email,
     Password: password,
     Department: dept,
   };
 
+  // root2.set(userData).then(()=>{
+  //   res.redirect('/staff');
+  // });
   root2.set(userData);
   res.redirect('/staff');
-  console.log('abhi');
 });
 
 app.get('/addRoom', (req, res) => {
@@ -177,9 +200,9 @@ app.post('/addRoom', (req, res) => {
     while (i <= numberOfWindows) {
       var windows = 'Curtain ' + i;
       userData1[windows] = {
-        'Automatic Status' : true,
-        Value : 100
-      }
+        'Automatic Status': true,
+        Value: 100,
+      };
       i = i + 1;
     }
   }
@@ -189,10 +212,10 @@ app.post('/addRoom', (req, res) => {
     var i = 1;
     while (i <= numberofLeds) {
       var LED = 'LED ' + i;
-      userData2[LED] =  {
-        'Automatic Status' : true,
-        Value : 100
-      }
+      userData2[LED] = {
+        'Automatic Status': true,
+        Value: 100,
+      };
       i = i + 1;
     }
   }
@@ -218,9 +241,9 @@ app.post('/addRoom', (req, res) => {
   }
 
   var userData9 = {
-    'LEDs' : true,
-    'Curtains': true
-  }
+    LEDs: true,
+    Curtains: true,
+  };
 
   Windows(numberOfWindows);
   Led(numberofLeds);
@@ -237,7 +260,7 @@ app.post('/addRoom', (req, res) => {
   res.redirect('/manage');
 });
 
-app.get('/manage',  (req, res) => {
+app.get('/manage', (req, res) => {
   var data;
   var rooms = firebase.database().ref('Rooms');
   rooms.once('value', (data) => {
@@ -272,8 +295,7 @@ app.get('/manage',  (req, res) => {
   });
 });
 
-
-app.get('/managed-:block-:room',  (req, res) => {
+app.get('/managed-:block-:room', (req, res) => {
   var data;
   var rooms = firebase.database().ref('Rooms');
   rooms.once('value', (data) => {
@@ -283,16 +305,18 @@ app.get('/managed-:block-:room',  (req, res) => {
       var rooms = [];
       var roomData;
       blocks.forEach((blockName) => {
-        if(blockName == req.params.block){
-          rooms.push( 
-            {
-              blockName: blockName,
-              roomNames: Object.getOwnPropertyNames(accessedData[blockName]),
-            } );
-            if(Object.getOwnPropertyNames(accessedData[blockName]) == req.params.room ){
-              console.log("here for " + req.params.room)
-              roomData = accessedData[blockName][req.params.room]
-            }
+        if (blockName == req.params.block) {
+          rooms.push({
+            blockName: blockName,
+            roomNames: Object.getOwnPropertyNames(accessedData[blockName]),
+          });
+          if (
+            Object.getOwnPropertyNames(accessedData[blockName]) ==
+            req.params.room
+          ) {
+            console.log('here for ' + req.params.room);
+            roomData = accessedData[blockName][req.params.room];
+          }
         }
       });
       var leds = Object.getOwnPropertyNames(roomData.LEDs);
@@ -315,7 +339,7 @@ app.get('/managed-:block-:room',  (req, res) => {
   });
 });
 
-app.get('/manage-:block',  (req, res) => {
+app.get('/manage-:block', (req, res) => {
   var data;
   var rooms = firebase.database().ref('Rooms');
   rooms.once('value', (data) => {
@@ -324,7 +348,7 @@ app.get('/manage-:block',  (req, res) => {
       var blocks = Object.getOwnPropertyNames(accessedData);
       var rooms = [];
       blocks.forEach((blockName) => {
-        if(blockName == req.params.block){
+        if (blockName == req.params.block) {
           rooms.push({
             blockName: blockName,
             roomNames: Object.getOwnPropertyNames(accessedData[blockName]),
@@ -352,7 +376,7 @@ app.get('/manage-:block',  (req, res) => {
   });
 });
 
-app.post('/manage',  (req, res) => {
+app.post('/manage', (req, res) => {
   var rooms = firebase.database().ref('Rooms');
   rooms.once('value', (data) => {
     if (data.val()) {
@@ -387,7 +411,7 @@ app.post('/manage',  (req, res) => {
   });
 });
 
-app.post('/updateRoomSensor',  (req, res) => {
+app.post('/updateRoomSensor', (req, res) => {
   var requiredRoom = firebase
     .database()
     .ref('Rooms/' + req.body.block + '/' + req.body.room);
@@ -395,80 +419,81 @@ app.post('/updateRoomSensor',  (req, res) => {
     if (data.val()) {
       var Data = data.val();
       var requiredElement = Data[req.body.update];
-      if(req.body.isUpdate){
+      if (req.body.isUpdate) {
         requiredElement[req.body.element] = req.body.status;
       }
-      if(req.body.isDelete){
-        delete requiredElement[req.body.element]
+      if (req.body.isDelete) {
+        delete requiredElement[req.body.element];
       }
-      if(req.body.isAdd){
-        var names  = Object.getOwnPropertyNames(requiredElement)
-        var last = names[names.length-1]
-        var number = Number(last.slice(last.length-1,last.length))
-        var newName = 'Room ' + (number+1)
-        requiredElement[newName] = 100
+      if (req.body.isAdd) {
+        var names = Object.getOwnPropertyNames(requiredElement);
+        var last = names[names.length - 1];
+        var number = Number(last.slice(last.length - 1, last.length));
+        var newName = 'Room ' + (number + 1);
+        requiredElement[newName] = 100;
       }
       requiredRoom
         .update({
           'Room Sensor': requiredElement,
         })
         .then(() => {
-          res.redirect('/managed-' + req.body.block + "-" + req.body.room );
+          res.redirect('/managed-' + req.body.block + '-' + req.body.room);
         })
         .catch((err) => {
           console.log(err);
           req.flash('error', err.message);
-          res.redirect('/managed-' + req.body.block + "-" + req.body.room );
+          res.redirect('/managed-' + req.body.block + '-' + req.body.room);
         });
     } else {
       req.flash('error', 'Unexpected Error Occured');
-      res.redirect('/managed-' + req.body.block + "-" + req.body.room );
+      res.redirect('/managed-' + req.body.block + '-' + req.body.room);
     }
   });
 });
 
-app.post('/updateCurtains',  (req, res) => {
+app.post('/updateCurtains', (req, res) => {
   var requiredRoom = firebase
     .database()
     .ref('Rooms/' + req.body.block + '/' + req.body.room);
   requiredRoom.once('value', (data) => {
     if (data.val()) {
       var Data = data.val();
-      var requiredElement = Data[req.body.update]; 
-      if(req.body.isUpdateStatus){
-        requiredElement[req.body.element]['Automatic Status'] = (req.body.status =="true");
+      var requiredElement = Data[req.body.update];
+      if (req.body.isUpdateStatus) {
+        requiredElement[req.body.element]['Automatic Status'] =
+          req.body.status == 'true';
       }
-      if(req.body.isUpdate){
+      if (req.body.isUpdate) {
         requiredElement[req.body.element]['Value'] = parseInt(req.body.status);
       }
-      if(req.body.isDelete){
-        delete requiredElement[req.body.element]
+      if (req.body.isDelete) {
+        delete requiredElement[req.body.element];
       }
-      if(req.body.isAdd){
-        var names  = Object.getOwnPropertyNames(requiredElement)
-        var last = names[names.length-1]
-        var number = Number(last.slice(last.length-1,last.length))
-        var newName = 'Curtain ' + (number+1)
+      if (req.body.isAdd) {
+        var names = Object.getOwnPropertyNames(requiredElement);
+        var last = names[names.length - 1];
+        var number = Number(last.slice(last.length - 1, last.length));
+        var newName = 'Curtain ' + (number + 1);
         requiredElement[newName] = {
-          'Automatic Status' : true,
-          'Value' : 100
-        }
+          'Automatic Status': true,
+          Value: 100,
+        };
       }
       requiredRoom
         .update({
           Curtains: requiredElement,
         })
         .then(() => {
-          res.redirect('/managed-' + req.body.block + "-" + req.body.room );
+          res.redirect('/managed-' + req.body.block + '-' + req.body.room);
         })
         .catch((err) => {
           console.log(err);
           req.flash('error', err.message);
-          res.redirect('/managed-' + req.body.block + "-" + req.body.room );
+          res.redirect('/managed-' + req.body.block + '-' + req.body.room);
         });
     } else {
       req.flash('error', 'Unexpected Error Occured');
-      res.redirect('/managed-' + req.body.block + "-" + req.body.room );
+      res.redirect('/managed-' + req.body.block + '-' + req.body.room);
     }
   });
 });
@@ -481,45 +506,46 @@ app.post('/updateLEDs', (req, res) => {
     if (data.val()) {
       var Data = data.val();
       var requiredElement = Data[req.body.update];
-      if(req.body.isUpdate){
+      if (req.body.isUpdate) {
         requiredElement[req.body.element]['Value'] = parseInt(req.body.status);
       }
-      if(req.body.isUpdateStatus){
-        requiredElement[req.body.element]['Automatic Status'] = (req.body.status =="true");
+      if (req.body.isUpdateStatus) {
+        requiredElement[req.body.element]['Automatic Status'] =
+          req.body.status == 'true';
       }
-      if(req.body.isDelete){
-        delete requiredElement[req.body.element]
+      if (req.body.isDelete) {
+        delete requiredElement[req.body.element];
       }
-      if(req.body.isAdd){
-        var names  = Object.getOwnPropertyNames(requiredElement)
-        var last = names[names.length-1]
-        var number = Number(last.slice(last.length-1,last.length))
-        var newName = 'LED ' + (number+1)
+      if (req.body.isAdd) {
+        var names = Object.getOwnPropertyNames(requiredElement);
+        var last = names[names.length - 1];
+        var number = Number(last.slice(last.length - 1, last.length));
+        var newName = 'LED ' + (number + 1);
         requiredElement[newName] = {
-          'Automatic Status' : true,
-          'Value' : 100
-        }
+          'Automatic Status': true,
+          Value: 100,
+        };
       }
       requiredRoom
         .update({
           LEDs: requiredElement,
         })
         .then(() => {
-          res.redirect('/managed-' + req.body.block + "-" + req.body.room );
+          res.redirect('/managed-' + req.body.block + '-' + req.body.room);
         })
         .catch((err) => {
           console.log(err);
           req.flash('error', err.message);
-          res.redirect('/managed-' + req.body.block + "-" + req.body.room );
+          res.redirect('/managed-' + req.body.block + '-' + req.body.room);
         });
     } else {
       req.flash('error', 'Unexpected Error Occured');
-      res.redirect('/managed-' + req.body.block + "-" + req.body.room );
+      res.redirect('/managed-' + req.body.block + '-' + req.body.room);
     }
   });
 });
 
-app.post('/updateWindowSensor',  (req, res) => {
+app.post('/updateWindowSensor', (req, res) => {
   var requiredRoom = firebase
     .database()
     .ref('Rooms/' + req.body.block + '/' + req.body.room);
@@ -527,34 +553,34 @@ app.post('/updateWindowSensor',  (req, res) => {
     if (data.val()) {
       var Data = data.val();
       var requiredElement = Data[req.body.update];
-      if(req.body.isUpdate){
+      if (req.body.isUpdate) {
         requiredElement[req.body.element] = req.body.status;
       }
-      if(req.body.isDelete){
-        delete requiredElement[req.body.element]
+      if (req.body.isDelete) {
+        delete requiredElement[req.body.element];
       }
-      if(req.body.isAdd){
-        var names  = Object.getOwnPropertyNames(requiredElement)
-        var last = names[names.length-1]
-        var number = Number(last.slice(last.length-1,last.length))
-        var newName = 'Window ' + (number+1)
-        requiredElement[newName] = 100
+      if (req.body.isAdd) {
+        var names = Object.getOwnPropertyNames(requiredElement);
+        var last = names[names.length - 1];
+        var number = Number(last.slice(last.length - 1, last.length));
+        var newName = 'Window ' + (number + 1);
+        requiredElement[newName] = 100;
       }
       requiredRoom
         .update({
           'Window Sensor': requiredElement,
         })
         .then(() => {
-          res.redirect('/managed-' + req.body.block + "-" + req.body.room );
+          res.redirect('/managed-' + req.body.block + '-' + req.body.room);
         })
         .catch((err) => {
           console.log(err);
           req.flash('error', err.message);
-          res.redirect('/managed-' + req.body.block + "-" + req.body.room );
+          res.redirect('/managed-' + req.body.block + '-' + req.body.room);
         });
     } else {
       req.flash('error', 'Unexpected Error Occured');
-      res.redirect('/managed-' + req.body.block + "-" + req.body.room );
+      res.redirect('/managed-' + req.body.block + '-' + req.body.room);
     }
   });
 });
