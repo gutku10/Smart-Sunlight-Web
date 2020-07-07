@@ -104,13 +104,13 @@ app.post('/resetPassword', (req, res) => {
 });
 
 app.get('/',requireLogin, (req, res) => {
-  var user = firebase.auth().currentUser;
-  if(user != null){
+  var current_user = firebase.auth().currentUser;
+  if(current_user != null){
     
     var total = firebase.database().ref('Total');
     total.once('value', (data) => {
       if (data.val()) {
-        res.render('dashboard', {data1:data.val(), user: user.displayName});
+        res.render('dashboard', {data1:data.val(), user: current_user.displayName});
       } else {
         res.render('dashboard');
       }
@@ -122,14 +122,14 @@ app.get('/',requireLogin, (req, res) => {
 
 
 app.get('/members', requireLogin, (req, res) => {
-  var user = firebase.auth().currentUser;
-  if(user != null){
+  var current_user = firebase.auth().currentUser;
+  if(current_user != null){
     var admin = firebase.database().ref('Teachers');
     admin.once('value', (data) => {
       if (data.val()) {
         var teachers = Object.getOwnPropertyNames(data.val());
         console.log(teachers)
-        res.render('members', {teacherNames: teachers, data: data.val(), user:user.displayName});
+        res.render('members', {teacherNames: teachers, data: data.val(), user:current_user.displayName});
       } else {
         res.send('i m here');
       }
@@ -139,13 +139,13 @@ app.get('/members', requireLogin, (req, res) => {
 });
 
 app.get('/staff',requireLogin, (req, res) => {
-  var user = firebase.auth().currentUser;
-  if(user != null){
+  var current_user = firebase.auth().currentUser;
+  if(current_user != null){
     var admin = firebase.database().ref('Admin');
   admin.once('value', (data) => {
     if (data.val()) {
       var names = Object.getOwnPropertyNames(data.val());
-      res.render('staff', {adminNames: names, data: data.val(),user:user.displayName});
+      res.render('staff', {adminNames: names, data: data.val(),user:current_user.displayName});
     } else {
       res.send('i m here');
     }
@@ -163,7 +163,8 @@ app.post('/staff', (req, res) => {
   var auth = req.body.auth;
   firebase.auth().createUserWithEmailAndPassword(email, password)
   .then(result => {
-    return result.user.  updateProfile({
+    console.log(result);
+    return result.user.updateProfile({
       displayName: fname + " " + sname
     })
   });
@@ -180,17 +181,15 @@ app.post('/staff', (req, res) => {
     Department: dept,
   };
 
-  // root2.set(userData).then(()=>{
-  //   res.redirect('/staff');
-  // });
+
   root2.set(userData);
   res.redirect('/staff');
 });
 
 app.get('/addRoom',requireLogin, (req, res) => {
-  var user = firebase.auth().currentUser;
-  if(user != null){
-    res.render('addRoom',{user:user.displayName});
+  var current_user = firebase.auth().currentUser;
+  if(current_user != null){
+    res.render('addRoom',{user:current_user.displayName});
   }
 
 });
@@ -287,8 +286,8 @@ app.post('/addRoom', (req, res) => {
 });
 
 app.get('/manage',requireLogin, (req, res) => {
-  var user = firebase.auth().currentUser;
-  if(user != null){
+  var current_user = firebase.auth().currentUser;
+  if(current_user != null){
     var data;
     var rooms = firebase.database().ref('Rooms');
     rooms.once('value', (data) => {
@@ -315,7 +314,7 @@ app.get('/manage',requireLogin, (req, res) => {
           windowSensor,
           roomSensor,
           curtains,
-          user: user.displayName
+          user: current_user.displayName
         });
       } else {
         console.log('i m in else');
@@ -327,8 +326,8 @@ app.get('/manage',requireLogin, (req, res) => {
 });
 
 app.get('/managed-:block-:room', (req, res) => {
-  var user = firebase.auth().currentUser;
-  if(user != null){
+  var current_user = firebase.auth().currentUser;
+  if(current_user != null){
     var data;
   var rooms = firebase.database().ref('Rooms');
   rooms.once('value', (data) => {
@@ -364,7 +363,7 @@ app.get('/managed-:block-:room', (req, res) => {
         windowSensor,
         roomSensor,
         curtains,
-        user:user.displayName
+        user:current_user.displayName
       });
     } else {
       console.log('i m in else');
@@ -377,8 +376,8 @@ app.get('/managed-:block-:room', (req, res) => {
 });
 
 app.get('/manage-:block', (req, res) => {
-  var user = firebase.auth().currentUser;
-  if(user != null){
+  var current_user = firebase.auth().currentUser;
+  if(current_user != null){
     var data;
     var rooms = firebase.database().ref('Rooms');
     rooms.once('value', (data) => {
@@ -407,7 +406,7 @@ app.get('/manage-:block', (req, res) => {
           windowSensor,
           roomSensor,
           curtains,
-          user:user.displayName
+          user:current_user.displayName
         });
       } else {
         console.log('i m in else');
@@ -419,8 +418,8 @@ app.get('/manage-:block', (req, res) => {
 });
 
 app.post('/manage' ,(req, res) => {
-  var user = firebase.auth().currentUser;
-  if(user != null){
+  var current_user = firebase.auth().currentUser;
+  if(current_user != null){
     var rooms = firebase.database().ref('Rooms');
   rooms.once('value', (data) => {
     if (data.val()) {
@@ -447,7 +446,7 @@ app.post('/manage' ,(req, res) => {
         windowSensor,
         roomSensor,
         curtains,
-        user: user.displayName
+        user: current_user.displayName
       });
     } else {
       console.log('i m in else');
