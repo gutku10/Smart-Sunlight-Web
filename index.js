@@ -150,7 +150,9 @@ app.post('/staff', (req, res) => {
   // var n = req.body.email.lastIndexOf("@");
   // var res = abhi.slice(0, n);
   // console.log(res);
-  var root2 = root.child(fname + ' ' + sname);
+  var mailval = email.toString();
+  var n = mailval.indexOf('@');
+  var root2 = root.child(email.substring(0,n));
   var userData = {
     Name: fname + ' ' + sname,
     Email: email,
