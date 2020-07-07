@@ -1,11 +1,12 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const firebase = require('firebase/app');
+const compression = require('compression');
 require('firebase/auth');
 var flash = require('connect-flash');
 app = express();
 const requireLogin = require('./middlewares/requirelogin');
-// const { app } = require('firebase/app');
+
 
 require('firebase/database');
 
@@ -27,6 +28,8 @@ app.use(function (req, res, next) {
 
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
+
+app.use(compression());
 
 var firebaseConfig = {
   // apiKey: 'AIzaSyC6tZpqmitjvI61_3X4J2DSS_-_w3J1XcU',
