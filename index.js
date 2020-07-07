@@ -419,8 +419,9 @@ app.get('/manage-:block', (req, res) => {
 });
 
 app.post('/manage' ,(req, res) => {
-
-  var rooms = firebase.database().ref('Rooms');
+  var user = firebase.auth().currentUser;
+  if(user != null){
+    var rooms = firebase.database().ref('Rooms');
   rooms.once('value', (data) => {
     if (data.val()) {
       var accessedData = data.val();
@@ -446,12 +447,15 @@ app.post('/manage' ,(req, res) => {
         windowSensor,
         roomSensor,
         curtains,
+        user: user.displayName
       });
     } else {
       console.log('i m in else');
       res.send('error');
     }
   });
+  }
+  
 });
 
 app.post('/updateRoomSensor', (req, res) => {
