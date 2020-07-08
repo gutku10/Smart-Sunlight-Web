@@ -66,42 +66,28 @@ app.post('/signin', (req, res) => {
   total.once('value', (data) => {
     if (data.val()) {
       var zabhi = data.val();
+      
       var teachers = Object.getOwnPropertyNames(data.val());
       teachers.forEach((teacher) => {
-        // console.log(zabhi[teacher].Email);
-        // console.log(typeof(zabhi[teacher].Email));
+   
         if (
-          zabhi[teacher].Email === email &&
-          zabhi[teacher].Password === password
+          zabhi[teacher].Email == email &&
+          zabhi[teacher].Password == password
         ) {
-          var result = firebase
+          return firebase
             .auth()
             .signInWithEmailAndPassword(email, password)
             .then(() => {
               res.redirect('/');
             })
-            .catch(err => console.log(err));
+            .catch(err => res.redirect('/signin'));
         }
+        // res.redirect('/signin');
       });
     }
   });
 
-  // if (email != '' && password != '') {
-  //   var result = firebase
-  //     .auth()
-  //     .signInWithEmailAndPassword(email, password)
-  //     .then(() => {
-  //       res.redirect('/');
-  //     });
 
-  //   result.catch(function (error) {
-  //     // req.flash('error', errorMessage);
-  //     res.redirect('/signin');
-  //   });
-  // } else {
-  //   req.flash('error', 'Please fill details');
-  //   res.redirect('/');
-  // }
 });
 
 app.get('/logout', (req, res) => {
@@ -245,7 +231,7 @@ app.post('/addRoom', (req, res) => {
   var userData = {
     Class: room_no,
     Block: block,
-    'Class Lux': 50,
+    'Class Lux':50,
     Status: true,
   };
 

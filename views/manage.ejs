@@ -263,7 +263,7 @@
                                                                     <tr>
                                                                         <td><%=eachLed%></td>
                                                                         <td> <%= roomData.LEDs[eachLed]['Value'] %> </td>
-                                                                        <% if( roomData['LEDs'][eachLed]['Automatic Status'] == false ){ %> { %> 
+                                                                        <% if( roomData['LEDs'][eachLed]['Automatic Status'] == false ){ %> 
                                                                             <form action="/updateLEDs" method="POST">
                                                                                 <td>
                                                                                     <input type="text" style="display: none;" value="<%=roomData.Block%>" name="block">
