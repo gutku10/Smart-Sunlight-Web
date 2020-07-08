@@ -6,8 +6,9 @@ require('firebase/auth');
 var flash = require('connect-flash');
 app = express();
 const requireLogin = require('./middlewares/requirelogin');
-
+const admin = require('firebase-admin')
 require('firebase/database');
+var serviceAccount = require("./serviceAccountKey.json");
 
 app.use(
   require('express-session')({
@@ -50,12 +51,16 @@ var firebaseConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://smart-sunlight.firebaseio.com"
+});
 firebase.auth.Auth.Persistence.LOCAL;
 
 app.get('/signin', (req, res) => {
   res.render('signin');
 });
-
 
 app.post('/signin', (req, res) => {
   var email = req.body.email;
@@ -66,10 +71,9 @@ app.post('/signin', (req, res) => {
   total.once('value', (data) => {
     if (data.val()) {
       var zabhi = data.val();
-      
+
       var teachers = Object.getOwnPropertyNames(data.val());
       teachers.forEach((teacher) => {
-   
         if (
           zabhi[teacher].Email == email &&
           zabhi[teacher].Password == password
@@ -80,14 +84,12 @@ app.post('/signin', (req, res) => {
             .then(() => {
               res.redirect('/');
             })
-            .catch(err => res.redirect('/signin'));
+            .catch((err) => res.redirect('/signin'));
         }
         // res.redirect('/signin');
       });
     }
   });
-
-
 });
 
 app.get('/logout', (req, res) => {
@@ -151,7 +153,7 @@ app.get('/members', requireLogin, (req, res) => {
   }
 });
 
-app.get('/staff', requireLogin, (req, res) => {
+app.get('/staff',  (req, res) => {
   var current_user = firebase.auth().currentUser;
   // console.log(current_user);
   if (current_user != null) {
@@ -172,7 +174,7 @@ app.get('/staff', requireLogin, (req, res) => {
 });
 
 app.post('/staff', async (req, res) => {
-  var current_user = await firebase.auth().currentUser;
+  // var current_user = await firebase.auth().currentUser.email;
   // console.log(current_user);
   var email = req.body.email;
   var password = req.body.Password;
@@ -180,27 +182,69 @@ app.post('/staff', async (req, res) => {
   var sname = req.body.sname;
   var dept = req.body.dept;
   var auth = req.body.auth;
-  const zabhi = await firebase
-    .auth()
-    .createUserWithEmailAndPassword(email, password);
+  // const zabhi = firebase
+  //   .auth()
+  //   .createUserWithEmailAndPassword(email, password)
+  //   .then(() => {
+      var root = firebase.database().ref().child(auth);
 
-  zabhi.displayName =  fname + ' ' + sname;
+      var mailval = email.toString();
+      var n = mailval.indexOf('@');
+      var root2 = root.child(email.substring(0, n));
+      var userData = {
+        Name: fname + ' ' + sname,
+        Email: email,
+        Password: password,
+        Department: dept,
+      };
+      root2.set(userData);
+
+  //   });
+  //   console.log(current_user);
+  // zabhi.displayName = fname + ' ' + sname;
   // console.log(zabhi);
-  var root = firebase.database().ref().child(auth);
+  admin.auth().createUser({
+    email: email,
+    password: password,
+    displayName: fname + " " + sname,
+  })
+    .then(function(userRecord) {
+      console.log('Successfully created new user:', userRecord.uid);
+    })
+    res.redirect('/staff');
 
-  var mailval = email.toString();
-  var n = mailval.indexOf('@');
-  var root2 = root.child(email.substring(0, n));
-  var userData = {
-    Name: fname + ' ' + sname,
-    Email: email,
-    Password: password,
-    Department: dept,
-  };
-  await console.log(current_user);
-  root2.set(userData);
-  // firebase.auth().currentUser = current_user;
-  res.redirect('/staff');
+
+  // functions.firestore
+  // .document('auth')
+  // .onCreate(async (snap, context) => {
+  //     try {
+  //         const userId = snap.id;
+  //         const batch = admin.firestore().batch();
+  //         const newUser = await admin.auth().createUser({
+  //             disabled: false,
+  //             displayName: snap.get('name'),
+  //             email: snap.get('email'),
+  //             password: snap.get('password')
+  //         });
+  
+  //         const ref1 = await 
+  //         admin.firestore().collection('user').doc(newUser.uid);
+  //             await batch.set(ref1, {
+  //             id: newUser.uid,
+  //             email: newUser.email,
+  //             name: newUser.displayName,
+  //             createdAt: admin.firestore.FieldValue.serverTimestamp()
+  //         });
+  //         const ref3 = await admin.firestore().collection('user').doc(userId);
+  //         await batch.delete(ref3);
+  //         return await batch.commit();
+  //     }
+  //     catch (error) {
+  //         console.error(error);
+  //     }
+  
+  // });
+
 });
 
 app.get('/addRoom', requireLogin, (req, res) => {
@@ -231,7 +275,7 @@ app.post('/addRoom', (req, res) => {
   var userData = {
     Class: room_no,
     Block: block,
-    'Class Lux':50,
+    'Class Lux': 50,
     Status: true,
   };
 
