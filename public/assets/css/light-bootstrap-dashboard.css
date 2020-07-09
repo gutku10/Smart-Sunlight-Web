@@ -630,15 +630,15 @@ input:focus {
 
 .sidebar .user {
     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-    padding-bottom: 20px;
-    margin-top: 20px;
+    padding-bottom: 40px;
+    margin-top: 30px;
 }
 
 .sidebar .user .photo {
-    width: 34px;
-    height: 34px;
+    width: 75px;
+    height: 70px;
     overflow: hidden;
-    border-radius: 50%;
+    border-radius: 25%;
     float: left;
     margin-right: 11px;
     margin-left: 23px;

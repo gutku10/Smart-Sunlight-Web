@@ -6,9 +6,9 @@ require('firebase/auth');
 var flash = require('connect-flash');
 app = express();
 const requireLogin = require('./middlewares/requirelogin');
-const admin = require('firebase-admin')
+const admin = require('firebase-admin');
 require('firebase/database');
-var serviceAccount = require("./serviceAccountKey.json");
+var serviceAccount = require('./serviceAccountKey.json');
 
 app.use(
   require('express-session')({
@@ -32,15 +32,6 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(compression());
 
 var firebaseConfig = {
-  // apiKey: 'AIzaSyC6tZpqmitjvI61_3X4J2DSS_-_w3J1XcU',
-  // authDomain: 'node-zabhi.firebaseapp.com',
-  // databaseURL: 'https://node-zabhi.firebaseio.com',
-  // projectId: 'node-zabhi',
-  // storageBucket: 'node-zabhi.appspot.com',
-  // messagingSenderId: '424219359183',
-  // appId: '1:424219359183:web:58d6a6aa0bec0679edc4ba',
-  // measurementId: 'G-XC0Y4EHTVB',
-
   apiKey: 'AIzaSyCUwlWgDhnqo_iGNCKG309wI0VyV2eMlFk',
   authDomain: 'smart-sunlight.firebaseapp.com',
   databaseURL: 'https://smart-sunlight.firebaseio.com',
@@ -54,7 +45,7 @@ firebase.initializeApp(firebaseConfig);
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://smart-sunlight.firebaseio.com"
+  databaseURL: 'https://smart-sunlight.firebaseio.com',
 });
 firebase.auth.Auth.Persistence.LOCAL;
 
@@ -153,7 +144,7 @@ app.get('/members', requireLogin, (req, res) => {
   }
 });
 
-app.get('/staff',  (req, res) => {
+app.get('/staff', (req, res) => {
   var current_user = firebase.auth().currentUser;
   // console.log(current_user);
   if (current_user != null) {
@@ -174,77 +165,37 @@ app.get('/staff',  (req, res) => {
 });
 
 app.post('/staff', async (req, res) => {
-  // var current_user = await firebase.auth().currentUser.email;
-  // console.log(current_user);
   var email = req.body.email;
   var password = req.body.Password;
   var fname = req.body.fname;
   var sname = req.body.sname;
   var dept = req.body.dept;
   var auth = req.body.auth;
-  // const zabhi = firebase
-  //   .auth()
-  //   .createUserWithEmailAndPassword(email, password)
-  //   .then(() => {
-      var root = firebase.database().ref().child(auth);
 
-      var mailval = email.toString();
-      var n = mailval.indexOf('@');
-      var root2 = root.child(email.substring(0, n));
-      var userData = {
-        Name: fname + ' ' + sname,
-        Email: email,
-        Password: password,
-        Department: dept,
-      };
-      root2.set(userData);
+  var root = firebase.database().ref().child(auth);
 
-  //   });
-  //   console.log(current_user);
-  // zabhi.displayName = fname + ' ' + sname;
-  // console.log(zabhi);
-  admin.auth().createUser({
-    email: email,
-    password: password,
-    displayName: fname + " " + sname,
-  })
-    .then(function(userRecord) {
-      console.log('Successfully created new user:', userRecord.uid);
+  var mailval = email.toString();
+  var n = mailval.indexOf('@');
+  var root2 = root.child(email.substring(0, n));
+  var userData = {
+    Name: fname + ' ' + sname,
+    Email: email,
+    Password: password,
+    Department: dept,
+  };
+  root2.set(userData);
+
+  admin
+    .auth()
+    .createUser({
+      email: email,
+      password: password,
+      displayName: fname + ' ' + sname,
     })
-    res.redirect('/staff');
-
-
-  // functions.firestore
-  // .document('auth')
-  // .onCreate(async (snap, context) => {
-  //     try {
-  //         const userId = snap.id;
-  //         const batch = admin.firestore().batch();
-  //         const newUser = await admin.auth().createUser({
-  //             disabled: false,
-  //             displayName: snap.get('name'),
-  //             email: snap.get('email'),
-  //             password: snap.get('password')
-  //         });
-  
-  //         const ref1 = await 
-  //         admin.firestore().collection('user').doc(newUser.uid);
-  //             await batch.set(ref1, {
-  //             id: newUser.uid,
-  //             email: newUser.email,
-  //             name: newUser.displayName,
-  //             createdAt: admin.firestore.FieldValue.serverTimestamp()
-  //         });
-  //         const ref3 = await admin.firestore().collection('user').doc(userId);
-  //         await batch.delete(ref3);
-  //         return await batch.commit();
-  //     }
-  //     catch (error) {
-  //         console.error(error);
-  //     }
-  
-  // });
-
+    .then(function (userRecord) {
+      console.log('Successfully created new user:', userRecord.uid);
+    });
+  res.redirect('/staff');
 });
 
 app.get('/addRoom', requireLogin, (req, res) => {
