@@ -192,8 +192,9 @@ app.post('/staff', async (req, res) => {
       password: password,
       displayName: fname + ' ' + sname,
     })
-    .then(function (userRecord) {
-      console.log('Successfully created new user:', userRecord.uid);
+    .then((userRecord) => {
+      userRecord.displayName = fname + ' ' + sname;
+      console.log('Successfully created new user:', userRecord);
     });
   res.redirect('/staff');
 });
